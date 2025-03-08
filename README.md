@@ -10,7 +10,7 @@
   professional projects and would recommend more mature open source projects for that. It's a great way to learn and to
   build something custom for your own needs though, so feel free to fork it and play around!
 ## Project structure
-### Backend (PHP API)
+### Backend (PHP API with MySQL and JWT auth)
 - Handles server registration
 - Provides an API for data collection
 - Stores historical server stats in MySQL
@@ -32,41 +32,6 @@
 - Sends data to the PHP API at intervals.
 - Can push real-time updates with WebSockets
 - Can be installed as a systemd service on Linux.
-## Stack:
-  - Backend: Custom PHP API with MySL and secured with JWT
-  - Agent: Python
-  - Frontend: Next.js with router and JWT authentication
-  - WebSockets: Real-time updates via PHP WebSockets
-## Planned enhancements:
-  - Add puppet
-  - Install agent with puppet
-  - Agent: websockets, failure alerts
-  - UI: Fully interactive UI with real-time updates, alerts, historical trends
-  - Add real-time websockets with ratchet (php)
-    - Stream server metric updates live to the frontend
-    - Send alerts on CPU/RAM thresold crossing
-  - Fetch and display live monitoring data on the dashboard
-  - Live real-time monitoring with websockets
-  - Alerts and notifications
-  - Historical data storage and trends
-  - More system metrics
-  - Puppet metrics
-  - Links to management sites
-  - Buttons for commands I use a lot
-  - UI improvements
-    - Dark mode
-    - Responsive design
-    - Nicer layout
-    - Animations
-  - Enhancing API security
-  - Logout button
-  - Role-based access
-  - Agent
-    - Logs
-    - Better error handling
-    - Retries
-  - API Logs
-    - Fail2Ban rule for logs
 
 # Some commands to test the API
 ## Get token
