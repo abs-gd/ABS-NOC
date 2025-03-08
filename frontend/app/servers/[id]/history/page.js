@@ -10,7 +10,7 @@ export default function ServerHistory() {
   const { id } = useParams();
   const [history, setHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
-  const [dateRange, setDateRange] = useState("1d"); // Default to last 1 day
+  const [dateRange, setDateRange] = useState("1d");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,8 +20,23 @@ export default function ServerHistory() {
     }
 
     getHistoricalStats(id, token).then((data) => {
-      setHistory(data);
-      filterData(data, "1d"); // Apply default filtering
+      if (Array.isArray(data)) {
+        const formattedData = data.map((entry) => ({
+          ...entry,
+          recorded_at: new Date(entry.recorded_at).toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        }));
+
+        setHistory(formattedData);
+        filterData(formattedData, "1d");
+      } else {
+        console.error("[ERROR] Expected array but got:", data);
+        setHistory([]);
+      }
     });
   }, [id]);
 
@@ -92,7 +107,7 @@ export default function ServerHistory() {
 
       {/* Chart */}
       <ResponsiveContainer width="100%" height={700}>
-        <LineChart data={filteredHistory} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+        <LineChart data={history} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
           <XAxis dataKey="recorded_at" tick={{ fill: "#555" }} />
           <YAxis tick={{ fill: "#555" }} />
           <Tooltip
