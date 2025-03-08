@@ -1,4 +1,7 @@
 # ABS Network Operation Center
+  - Monitors server resources, puppet and proxmox hypervisors
+  - Panel with links to all important management platforms and sites (proxmox, phpmyadmin, hoster panels, google analytics, office, ... )
+  - Buttons and forms for commands I use a lot (pulling in puppet code, adding a new website on one of the webservers, ...)
 ## Some notices
   - Do NOT make this accessible to the internet, while it has some basic security, I do not see it as secure
   enough for that use case. All my servers are accessible through an internal VPN and I can access the dashboard
@@ -6,10 +9,6 @@
   - This is mainly a hobby project for my own environment, I do not believe in reinventing the wheel in my
   professional projects and would recommend more mature open source projects for that. It's a great way to learn and to
   build something custom for your own needs though, so feel free to fork it and play around!
-## Goal: DevOps & Server Monitoring Platform
-  - Monitors server resources, puppet and proxmox hypervisors
-  - Panel with links to all important management platforms and sites (proxmox, phpmyadmin, hoster panels, google analytics, office, ... )
-  - Buttons and forms for commands I use a lot (pulling in puppet code, adding a new website on one of the webservers, ...)
 ## Project structure
 ### Backend (PHP API)
 - Handles server registration
