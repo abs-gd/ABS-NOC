@@ -1,6 +1,6 @@
 # ABS Network Operation Center
   - Monitors server resources, puppet and proxmox hypervisors
-  - Panel with links to all important management platforms and sites (proxmox, phpmyadmin, hoster panels, google analytics, office, ... )
+  - Panel with links to all important management platforms and sites (proxmox, phpmyadmin, hoster panels, google analytics, office365, ... )
   - Buttons and forms for commands I use a lot (pulling in puppet code, adding a new website on one of the webservers, ...)
 ## Some notices
   - Do NOT make this accessible to the internet, while it has some basic security, I do not see it as secure
@@ -16,7 +16,7 @@
 - Stores historical server stats in MySQL
 - Manages alerts and notifications (email, discord bot, webhook support)
 - Provides WebSockets-powered real-time updates
-- Add SSH commands
+- Has scripts that can be executed on servers through SSH and can be triggered from the frontend
 ### Frontend (next.js)
 - Displays real-time server stats
 - Shows historical performance trends
