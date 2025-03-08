@@ -17,6 +17,9 @@ export default function Navbar() {
         <Link href="/monitoring" className={pathname === "/monitoring" ? "font-bold" : ""}>
           Monitoring
         </Link>
+        <Link href="/servers" className={pathname === "/servers" ? "font-bold" : ""}>
+          Servers
+        </Link>
       </nav>
       <button onClick={logout} className="bg-red-500 px-4 py-2 rounded">
         Logout

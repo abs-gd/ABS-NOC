@@ -55,5 +55,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
     exit;
 }
 
+// DELETE Server
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents("php://input"), $data);
+    if (!isset($data['id'])) {
+        echo json_encode(["error" => "Missing server ID"]);
+        http_response_code(400);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM servers WHERE id = ?");
+    if ($stmt->execute([$data['id']])) {
+        echo json_encode(["message" => "Server deleted"]);
+    } else {
+        echo json_encode(["error" => "Failed to delete server"]);
+        http_response_code(500);
+    }
+    exit;
+}
+
+// UPDATE Server (Rename or Change IP)
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    parse_str(file_get_contents("php://input"), $data);
+    if (!isset($data['id']) || !isset($data['name']) || !isset($data['ip_address'])) {
+        echo json_encode(["error" => "Missing required fields"]);
+        http_response_code(400);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("UPDATE servers SET name = ?, ip_address = ? WHERE id = ?");
+    if ($stmt->execute([$data['name'], $data['ip_address'], $data['id']])) {
+        echo json_encode(["message" => "Server updated"]);
+    } else {
+        echo json_encode(["error" => "Failed to update server"]);
+        http_response_code(500);
+    }
+    exit;
+}
+
+// TOGGLE Server Status (Active/Inactive)
+if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
+    parse_str(file_get_contents("php://input"), $data);
+    if (!isset($data['id']) || !isset($data['status'])) {
+        echo json_encode(["error" => "Missing server ID or status"]);
+        http_response_code(400);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("UPDATE servers SET status = ? WHERE id = ?");
+    if ($stmt->execute([$data['status'], $data['id']])) {
+        echo json_encode(["message" => "Server status updated"]);
+    } else {
+        echo json_encode(["error" => "Failed to update status"]);
+        http_response_code(500);
+    }
+    exit;
+}
+
 echo json_encode(["error" => "Invalid request"]);
 http_response_code(400);
