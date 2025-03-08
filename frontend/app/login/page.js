@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://noc.abs.test/auth.php",
+        "http://noc.abs.test/api/auth.php",
         {
           email,
           password,

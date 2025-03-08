@@ -5,8 +5,8 @@ import json
 import os
 
 # Configuration
-API_URL = "http://noc.abs.test/servers.php?id=1"  # Replace 1 with actual server ID
-AUTH_URL = "http://noc.abs.test/auth.php?register_agent=1"
+API_URL = "http://noc.abs.test/api/servers.php?id=1"  # Replace 1 with actual server ID
+AUTH_URL = "http://noc.abs.test/api/auth.php?register_agent=1"
 SERVER_ID = 1  # Unique ID for this agent
 TOKEN_FILE = "agent_token.txt"
 #TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDEyNzEyNTJ9.dU81c6F29456ETlHLIf49yLLyXv6XyYdVhDk3GA90DU"  # Replace with a valid JWT token
