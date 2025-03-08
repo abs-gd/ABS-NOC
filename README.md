@@ -47,7 +47,7 @@ curl -X POST http://noc.abs.test/servers.php?id=1 \
 
 # How to install the python agent as a service
 ## ON LINUX
-nano /etc/systemd/system/server-agent.service
+`nano /etc/systemd/system/server-agent.service`
 ```
 [Unit]
 Description=Server Monitoring Agent
@@ -62,10 +62,10 @@ User=root
 WantedBy=multi-user.target
 ```
 
-systemctl daemon-reload
-systemctl enable server-agent
-systemctl start server-agent
-systemctl status server-agent
+`systemctl daemon-reload`
+`systemctl enable server-agent`
+`systemctl start server-agent`
+`systemctl status server-agent`
 
 ## ON WINDOWS
 - Open Task Scheduler
