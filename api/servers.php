@@ -1,57 +1,18 @@
 <?php
-// Remove any existing headers that might interfere
-header_remove("Access-Control-Allow-Origin");
-header_remove("Access-Control-Allow-Methods");
-header_remove("Access-Control-Allow-Headers");
-
-// Set CORS headers manually
-$allowed_origin = "http://localhost:3000";  // ✅ Set the allowed frontend origin
-
-header("Access-Control-Allow-Origin: $allowed_origin");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Credentials: true");
-
-// Handle preflight (OPTIONS request)
-if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
-    http_response_code(204);
-    exit();
-}
-
 require 'database.php';
 require 'vendor/autoload.php';
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+include_once 'includes/cors.php';
+include_once 'includes/secured.php';
 
-// ✅ Secure API by requiring Authorization
-$headers = getallheaders();
-$authHeader = $headers['Authorization'] ?? '';
-
-if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-    echo json_encode(["error" => "Unauthorized"]);
-    http_response_code(401);
-    exit;
-}
-
-$token = $matches[1];
-try {
-    $decoded = JWT::decode($token, new Key($_ENV['JWT_SECRET'], 'HS256'));
-    $userId = $decoded->user_id;
-} catch (Exception $e) {
-    echo json_encode(["error" => "Invalid token"]);
-    http_response_code(401);
-    exit;
-}
-
-// ✅ Fetch all servers (only for authorized users)
+// Fetch all servers
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['id'])) {
     $stmt = $pdo->query("SELECT * FROM servers");
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
 }
 
-// ✅ Fetch a single server by ID
+// Fetch a single server by ID
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $serverId = $_GET['id'];
     $stmt = $pdo->prepare("SELECT * FROM servers WHERE id = ?");
@@ -68,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     exit;
 }
 
-// ✅ Send monitoring data (CPU, RAM, Disk, Network)
+// Send monitoring data (CPU, RAM, Disk, Network)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
     $serverId = $_GET['id'];
     $data = json_decode(file_get_contents("php://input"), true);
