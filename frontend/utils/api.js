@@ -3,6 +3,7 @@
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const HISTORY_URL = process.env.NEXT_PUBLIC_HISTORY_URL;
 
 export const getServers = async (token) => {
   return axios.get(`${API_URL}`, {
@@ -23,6 +24,12 @@ export const sendMetrics = async (id, token, data) => {
       "Content-Type": "application/json",
     },
   });
+};
+
+export const getHistoricalStats = async (serverId, token) => {
+  return fetch(`${HISTORY_URL}?id=${serverId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
 };
 
 export const logout = () => {

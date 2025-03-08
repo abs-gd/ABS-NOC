@@ -41,10 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         exit;
     }
 
+    // Store new server metrics in `server_stats`
+    $stmt = $pdo->prepare("INSERT INTO server_stats (server_id, cpu_usage, ram_usage, disk_usage, network_usage) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$serverId, $data['cpu_usage'], $data['ram_usage'], $data['disk_usage'], $data['network_usage']]);
+
+    echo json_encode(["message" => "Metrics updated successfully"]);
+/*
     $stmt = $pdo->prepare("UPDATE servers SET cpu_usage = ?, ram_usage = ?, disk_usage = ?, network_usage = ? WHERE id = ?");
     $stmt->execute([$data['cpu_usage'], $data['ram_usage'], $data['disk_usage'], $data['network_usage'], $serverId]);
 
     echo json_encode(["message" => "Metrics updated successfully"]);
+*/
     exit;
 }
 

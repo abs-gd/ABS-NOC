@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Monitoring() {
   const [servers, setServers] = useState({});
@@ -36,6 +37,9 @@ export default function Monitoring() {
             <p>RAM Usage: {server.ram_usage}%</p>
             <p>Disk Usage: {server.disk_usage}%</p>
             <p>Network Usage: {server.network_usage} KB</p>
+            <Link href={`/servers/${server.server_id}/history`} className="text-blue-500 mt-2 block">
+              View History →
+            </Link>
           </div>
         ))}
       </div>
