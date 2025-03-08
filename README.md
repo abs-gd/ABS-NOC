@@ -9,15 +9,16 @@
   - This is mainly a hobby project for my own environment, I do not believe in reinventing the wheel in my
   professional projects and would recommend more mature open source projects for that. It's a great way to learn and to
   build something custom for your own needs though, so feel free to fork it and play around!
-## Project structure
-### Backend (PHP API with MySQL and JWT auth)
+
+# Project structure
+## Backend (PHP API with MySQL and JWT auth)
 - Handles server registration
 - Provides an API for data collection
 - Stores historical server stats in MySQL
 - Manages alerts and notifications (email, discord bot, webhook support)
 - Provides WebSockets-powered real-time updates
 - Has scripts that can be executed on servers through SSH and can be triggered from the frontend
-### Frontend (next.js)
+## Frontend (next.js)
 - Displays real-time server stats
 - Shows historical performance trends
 - Handles user authentication & dashboards
@@ -26,7 +27,7 @@
 - Admin panel for server management
 - Panel with links to all important management platforms and sites
 - Easy access for commands I use a lot (pulling puppet code from git, updating servers, ...)
-### Server Agent (Python)
+## Server Agent (Python)
 - Runs on each monitored server.
 - Collects CPU, RAM, Disk, and Network stats. (psutil)
 - Sends data to the PHP API at intervals.
