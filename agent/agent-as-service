@@ -1,0 +1,41 @@
+------
+- ON LINUX
+------
+
+sudo nano /etc/systemd/system/server-agent.service
+
+---
+
+[Unit]
+Description=Server Monitoring Agent
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /path/to/agent.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+
+---
+
+sudo systemctl daemon-reload
+sudo systemctl enable server-agent
+sudo systemctl start server-agent
+sudo systemctl status server-agent
+
+
+
+
+------
+- ON WINDOWS
+------
+1️⃣ Open Task Scheduler
+2️⃣ Create a New Task
+3️⃣ Set Trigger → "At startup" or "Every 5 minutes"
+4️⃣ Set Action → "Start a program"
+
+Program: python
+Arguments: "C:\path\to\agent.py"
+5️⃣ Save & Start the Task
