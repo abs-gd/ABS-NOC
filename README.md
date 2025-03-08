@@ -26,7 +26,7 @@
 - WebSockets for live updates
 - Admin panel for server management
 - Panel with links to all important management platforms and sites
-- Easy access for commands I use a lot (pulling puppet code from git, updating servers, ...)
+- Easy access for commands I use a lot (pulling puppet code from git, adding sites to webservers, updating servers, ...)
 ## Server Agent (Python)
 - Runs on each monitored server.
 - Collects CPU, RAM, Disk, and Network stats. (psutil)
