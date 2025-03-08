@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+/*const API_URL = process.env.NEXT_PUBLIC_API_URL;*/
+
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +17,8 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://noc.abs.test/api/auth.php",
+        /*"http://noc.abs.test/api/auth.php",*/
+        process.env.NEXT_PUBLIC_LOGIN_URL,
         {
           email,
           password,
@@ -24,12 +28,11 @@ export default function Login() {
           withCredentials: true,
         }
       );
-       console.log("API Response:", res.data);
+      /*console.log("API Response:", res.data);*/
       localStorage.setItem("token", res.data.token);
       router.push("/");
     } catch (err) {
-            console.error("Login error:", err.response?.data || err.message);
-
+      /*console.error("Login error:", err.response?.data || err.message);*/
       setError("Invalid login credentials");
     }
   };

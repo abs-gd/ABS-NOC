@@ -24,3 +24,8 @@ export const sendMetrics = async (id, token, data) => {
     },
   });
 };
+
+export const logout = () => {
+  localStorage.removeItem("token");  // Remove JWT token
+  window.location.href = "/login";   // Redirect to login page
+};
