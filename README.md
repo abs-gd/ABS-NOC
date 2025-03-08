@@ -62,10 +62,10 @@ User=root
 WantedBy=multi-user.target
 ```
 
-`systemctl daemon-reload`
-`systemctl enable server-agent`
-`systemctl start server-agent`
-`systemctl status server-agent`
+`systemctl daemon-reload`  
+`systemctl enable server-agent`  
+`systemctl start server-agent`  
+`systemctl status server-agent`  
 
 ## ON WINDOWS
 - Open Task Scheduler
