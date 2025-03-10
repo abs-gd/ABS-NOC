@@ -7,7 +7,7 @@ import time
 
 
 SERVER_ID = 1
-INTERVAL = 5
+INTERVAL = 60
 API_URL = "http://noc.abs.test/api/servers.php?id=" + str(SERVER_ID)
 AUTH_URL = "http://noc.abs.test/api/auth.php?register_agent=1"
 TOKEN_FILE = "agent_token.txt"

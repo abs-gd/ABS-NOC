@@ -86,12 +86,14 @@ export default function Servers() {
                   </>
                 ) : (
                   <>
-                    <span className="font-semibold">{server.name}</span> - {server.ip_address} 
-                    <button onClick={() => setEditMode(server.id)} className="bg-yellow-500 text-white px-2 py-1 rounded">✏</button>
-                    <button onClick={() => handleDelete(server.id)} className="bg-red-600 text-white px-2 py-1 rounded">🗑</button>
-                    <button onClick={() => handleToggleStatus(server.id, server.status)} className="bg-gray-500 text-white px-2 py-1 rounded">
-                      {server.status === "active" ? "Deactivate" : "Activate"}
-                    </button>
+                    <span className="font-semibold">{server.name} - {server.ip_address}</span>
+                    <div>
+                      <button onClick={() => setEditMode(server.id)} className="mr-2 bg-yellow-500 text-white px-2 py-1 rounded">✏</button>
+                      <button onClick={() => handleDelete(server.id)} className="mr-2 bg-red-600 text-white px-2 py-1 rounded">🗑</button>
+                      <button onClick={() => handleToggleStatus(server.id, server.status)} className="bg-gray-500 text-white px-2 py-1 rounded">
+                        {server.status === "active" ? "Deactivate" : "Activate"}
+                      </button>
+                    </div>
                   </>
                 )}
               </li>
