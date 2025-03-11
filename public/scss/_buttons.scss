@@ -1,14 +1,38 @@
 @import 'variables';
+@import 'mixins';
+@import 'animations';
 
 button {
+  @extend %button-base;
   background: $secondary-color;
-  border: none;
-  padding: 10px 15px;
-  color: #fff111;
-  cursor: pointer;
-  font-family: $font-stack;
+  color: #fff;
+  @extend %fade-in;
 
   &:hover {
     background: darken($secondary-color, 10%);
+  }
+
+  &.primary {
+    background: $primary-color;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+
+  &.pulse {
+    @extend %pulse-effect;
+  }
+}
+
+#dark-mode-toggle {
+  @extend %button-base;
+    background: $primary-color;
+  transition: transform 0.3s ease, background 0.3s ease;
+        font-size: 16px;
+          padding: 0;
+
+  &:active {
+    transform: scale(0.9);
   }
 }

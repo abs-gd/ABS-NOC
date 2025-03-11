@@ -1,0 +1,31 @@
+@import 'variables';
+@import 'animations';
+@import 'mixins';
+
+.dark-mode {
+  @extend %fade-effect;
+  background: $background-dark;
+  color: $text-dark;
+  transition: background 0.4s ease, color 0.4s ease;
+
+  header {
+    background: darken($background-dark, 10%);
+    transition: background 0.4s ease;
+  }
+
+  nav a {
+    color: lighten($text-dark, 20%);
+    transition: color 0.4s ease;
+  }
+
+  button {
+    @extend %button-base;
+    background: lighten($background-dark, 15%);
+    color: $text-dark;
+    transition: background 0.4s ease, color 0.4s ease;
+
+    &:hover {
+      background: lighten($background-dark, 25%);
+    }
+  }
+}

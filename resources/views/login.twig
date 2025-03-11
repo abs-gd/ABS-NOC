@@ -1,7 +1,13 @@
-{# {% extends "layout.twig" %} #}
-
-
-    <h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABS NOC - Login</title>
+    <link rel="stylesheet" href="/scss/compiler.php?v={{ "now"|date("U") }}">
+</head>
+<body>
+    <h1>Login</h1>
 
     {% if error %}
         <p style="color: red;">{{ error }}</p>
@@ -13,3 +19,35 @@
         <input type="password" name="password" required placeholder="Password">
         <button type="submit">Login</button>
     </form>
+    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("dark-mode-toggle");
+        const body = document.body;
+        const isDarkMode = localStorage.getItem("dark-mode") === "enabled";
+
+        if (isDarkMode) {
+            body.classList.add("dark-mode");
+            toggleButton.textContent = "☀️ Light Mode";
+        }
+
+        toggleButton.addEventListener("click", function () {
+            body.classList.add("transitioning");
+            setTimeout(() => {
+                if (body.classList.contains("dark-mode")) {
+                    body.classList.remove("dark-mode");
+                    localStorage.setItem("dark-mode", "disabled");
+                    toggleButton.textContent = "🌙 Dark Mode";
+                } else {
+                    body.classList.add("dark-mode");
+                    localStorage.setItem("dark-mode", "enabled");
+                    toggleButton.textContent = "☀️ Light Mode";
+                }
+                body.classList.remove("transitioning");
+            }, 300);
+        });
+    });
+</script>
+</body>
+</html>

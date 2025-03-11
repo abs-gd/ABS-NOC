@@ -1,4 +1,13 @@
-    <h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABS NOC - Login</title>
+    <link rel="stylesheet" href="/scss/compiler.php?v={{ "now"|date("U") }}">
+</head>
+<body>
+    <h1>Register</h1>
 
     {% if error %}
         <p style="color: red;">{{ error }}</p>
@@ -14,3 +23,5 @@
         <input type="password" name="password" required placeholder="Password">
         <button type="submit">Register</button>
     </form>
+</body>
+</html>

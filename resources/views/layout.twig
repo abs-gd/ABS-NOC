@@ -7,22 +7,77 @@
     <link rel="stylesheet" href="/scss/compiler.php?v={{ "now"|date("U") }}">
 </head>
 <body>
+<header>
     <nav>
-        <a href="/">Home</a>
-        <a href="/servers">Servers</a>
-        {#{% if user %}#}
-            <form method="POST" action="/logout">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button id="nav-toggle" aria-label="Toggle menu">☰</button>
+        <ul id="nav-menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/servers">Servers</a></li>
 
-                <button type="submit">Logout</button>
-            </form>
-        {#{% else %}
-            <a href="/login">Login</a> | <a href="/register">Register</a>
-        {% endif %}#}
+            {#{% if user %}#}
+                <li>
+                    <form method="POST" action="/logout">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            <li><button id="dark-mode-toggle">🌙 Dark Mode</button></li>
+
+            {#{% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            {% endif %}#}
+        </ul>
     </nav>
+    </header>
 
     <main>
         {% block content %}{% endblock %}
     </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("dark-mode-toggle");
+        const body = document.body;
+        const isDarkMode = localStorage.getItem("dark-mode") === "enabled";
+
+        if (isDarkMode) {
+            body.classList.add("dark-mode");
+            toggleButton.textContent = "☀️ Light Mode";
+        }
+
+        toggleButton.addEventListener("click", function () {
+            body.classList.add("transitioning");
+            setTimeout(() => {
+                if (body.classList.contains("dark-mode")) {
+                    body.classList.remove("dark-mode");
+                    localStorage.setItem("dark-mode", "disabled");
+                    toggleButton.textContent = "🌙 Dark Mode";
+                } else {
+                    body.classList.add("dark-mode");
+                    localStorage.setItem("dark-mode", "enabled");
+                    toggleButton.textContent = "☀️ Light Mode";
+                }
+                body.classList.remove("transitioning");
+            }, 300);
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("nav-toggle");
+        const navMenu = document.getElementById("nav-menu");
+
+        toggleButton.addEventListener("click", function () {
+            navMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!navMenu.contains(event.target) && event.target !== toggleButton) {
+                navMenu.classList.remove("active");
+            }
+        });
+    });
+</script>
 </body>
 </html>

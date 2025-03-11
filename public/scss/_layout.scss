@@ -1,7 +1,77 @@
 @import 'variables';
+@import 'mixins';
+@import 'animations';
 
 body {
   font-family: $font-stack;
+  font-size: 16px;
+  background: $background-color;
+  color: $text-color;
+  @extend %fade-in;
+}
+
+header {
   background: $primary-color;
-  color: #fff111;
+  color: white;
+  padding: 0;
+  animation: fade-in 0.8s ease-in-out;
+
+  nav {
+    @extend %flex-center;
+        padding: 15px 20px;
+          /*background: $primary-color;*/
+        gap: 15px;
+        button {
+          padding: 0;
+        }
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+    
+        @include responsive(mobile) {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 30px;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background: $primary-color;
+          text-align: center;
+          padding: 10px 0;
+          transition: transform 0.3s ease-in-out;
+        }
+    
+        &.active {
+          display: flex;
+          transform: translateY(0);
+        }
+    }
+         #nav-toggle {
+           display: none;
+           font-size: 24px;
+           background: none;
+           border: none;
+           color: white;
+           cursor: pointer;
+    
+           @include responsive(mobile) {
+             display: block;
+           }
+         }
+
+    a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: lighten(white, 20%);
+      }
+    }
+    a, button {
+      font-size: 18px;
+    }
+  }
 }

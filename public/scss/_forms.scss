@@ -1,0 +1,50 @@
+@import 'variables';
+@import 'mixins';
+@import 'animations';
+
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+
+  @include responsive(mobile) {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+
+  button {
+    @extend %button-base;
+    background: $primary-color;
+    color: white;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: darken($primary-color, 10%);
+    }
+  }
+    input,
+    button {
+      /*width: 100%;*/
+      font-size: 16px;
+      padding: 12px;
+    }
+}
