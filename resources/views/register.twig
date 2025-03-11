@@ -1,6 +1,6 @@
 {% extends "layout.twig" %}
 
-{% block title %}Register{% endblock %}
+{% block title %}ABS NOC - Register{% endblock %}
 
 {% block content %}
     <h2>Register</h2>
@@ -14,7 +14,7 @@
     {% endif %}
 
     <form method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <input type="email" name="email" required placeholder="Email">
         <input type="password" name="password" required placeholder="Password">
         <button type="submit">Register</button>

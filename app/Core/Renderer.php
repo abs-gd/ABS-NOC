@@ -21,7 +21,7 @@ class Renderer {
     }
 
     public static function render(string $template, array $data = []) {
-              // Inject CSRF token automatically into all templates
+        // Inject CSRF token into all templates
         $data['csrf_token'] = Csrf::generateToken();
         return self::init()->render($template, $data);
     }

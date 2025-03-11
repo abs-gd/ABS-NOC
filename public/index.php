@@ -5,7 +5,7 @@ use App\Controllers\AuthController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Cors::handle(); // Apply CORS handling
+Cors::handle();
 
 session_start();
 //var_dump($_SESSION);
