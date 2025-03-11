@@ -8,6 +8,7 @@
 <body>
     <nav>
         <a href="/">Home</a>
+        <a href="/servers">Servers</a>
         {% if user %}
             <form method="POST" action="/logout">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
