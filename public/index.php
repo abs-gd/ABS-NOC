@@ -12,8 +12,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
 // FOR LOCAL TESTING
-header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' http: https: data: blob:;");
-header("Set-Cookie: PHPSESSID=" . session_id() . "; Path=/; HttpOnly; SameSite=Lax");
+/*header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' http: https: data: blob:;");*/
 
 // Handle preflight (OPTIONS request)
 if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
@@ -22,20 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
 }
 
 session_set_cookie_params([
-    'lifetime' => 0,            // Session expires when the browser closes
-    'path' => '/',
-    'domain' => '',             // Set if using a specific domain
-    'secure' => false,           // ✅ Requires HTTPS
-    'httponly' => true,         // ✅ Prevents JavaScript access to the cookie
-    'samesite' => 'Lax'        // ✅ Allows cross-site cookies
+    //'lifetime' => 0,            // Session expires when the browser closes
+    //'path' => '/',
+    //'domain' => '',             // Set if using a specific domain
+    'secure' => false,           // Doesn't require HTTPS (change in production)
+    'httponly' => true,         // Prevents JavaScript access to the cookie
+    //'samesite' => 'Lax'        // Allows cross-site cookies
+    'samesite' => 'Strict'        // Allows cross-site cookies
 ]);
 
 session_start();
-
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
+//var_dump($_SESSION);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\HomeController;

@@ -1,30 +1,8 @@
 <?php
-/*
-namespace App\Controllers;
-
-class AuthController {
-  public function login() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $_SESSION['user'] = $_POST['username'];
-      header('Location: /');
-      exit;
-    }
-
-    return '<form method="POST"><input type="text" name="username"><button type="submit">Login</button></form>';
-  }
-
-  public function logout() {
-    session_destroy();
-    header('Location: /');
-    exit;
-  }
-}
-*/
-
-
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Helpers\Csrf;
 
 class AuthController {
     private User $userModel;
@@ -36,6 +14,10 @@ class AuthController {
 
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validateToken($_POST['csrf_token'])) {
+                die("Invalid CSRF token.");
+            }
+
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = $_POST['password'];
 
@@ -55,44 +37,50 @@ class AuthController {
             return "Registration successful! <a href='/login'>Login</a>";
         }
 
-        return '<form method="POST">
-                    <input type="email" name="email" required placeholder="Email">
-                    <input type="password" name="password" required placeholder="Password">
-                    <button type="submit">Register</button>
-                </form>';
+        $csrf_token = Csrf::generateToken();
+        return "<form method='POST'>
+                    <input type='hidden' name='csrf_token' value='$csrf_token'>
+                    <p>CSRF Token: $csrf_token</p>  <!-- Debugging -->
+                    <input type='email' name='email' required placeholder='Email'>
+                    <input type='password' name='password' required placeholder='Password'>
+                    <button type='submit'>Register</button>
+                </form>";
     }
 
     public function login() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-        $password = $_POST['password'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validateToken($_POST['csrf_token'])) {
+                die("Invalid CSRF token.");
+            }
 
-        $user = $this->userModel->findByEmail($email);
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $password = $_POST['password'];
+            $user = $this->userModel->findByEmail($email);
 
-        if (!$user || !password_verify($password, $user['password'])) {
-            return "Invalid email or password.";
+            if (!$user || !password_verify($password, $user['password'])) {
+                return "Invalid email or password.";
+            }
+
+            $_SESSION['user'] = ['id' => $user['id'], 'email' => $user['email']];
+            header('Location: /');
+            exit;
         }
+        $csrf_token = Csrf::generateToken();
+        return "<form method='POST'>
+                    <input type='hidden' name='csrf_token' value='$csrf_token'>
+                    <input type='email' name='email' required placeholder='Email'>
+                    <input type='password' name='password' required placeholder='Password'>
+                    <button type='submit'>Login</button>
+                </form>";
+    }
 
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'email' => $user['email']
-        ];
-
+    public function logout() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Csrf::validateToken($_POST['csrf_token'])) {
+            die("Invalid CSRF token.");
+        }
+        session_destroy();
         header('Location: /');
         exit;
     }
-
-    return '<form method="POST">
-                <input type="email" name="email" required placeholder="Email">
-                <input type="password" name="password" required placeholder="Password">
-                <button type="submit">Login</button>
-            </form>';
-}
-
-public function logout() {
-    session_destroy();
-    header('Location: /');
-    exit;
-}
 }
 
