@@ -1,0 +1,14 @@
+@import 'variables';
+
+button {
+  background: $secondary-color;
+  border: none;
+  padding: 10px 15px;
+  color: #fff111;
+  cursor: pointer;
+  font-family: $font-stack;
+
+  &:hover {
+    background: darken($secondary-color, 10%);
+  }
+}
