@@ -1,0 +1,10 @@
+{% extends "layout.twig" %}
+
+{% block title %}Home - My PHP App{% endblock %}
+
+{% block content %}
+    <h1>Welcome{% if user %}, {{ user.email }}{% endif %}!</h1>
+    {% if not user %}
+        <p><a href="/login">Login</a> or <a href="/register">Register</a></p>
+    {% endif %}
+{% endblock %}
