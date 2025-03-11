@@ -14,3 +14,5 @@ build/
 *.log
 tmp/
 cache/
+public/css/style.css
+*.cache

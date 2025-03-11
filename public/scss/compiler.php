@@ -8,12 +8,10 @@ $scssFile = __DIR__ . '/main.scss';
 $cssFile = __DIR__ . '/../css/style.css';
 $cacheFile = __DIR__ . '/../css/style.cache';
 
-// Debugging: Check if SCSS file exists
-if (!file_exists($scssFile)) {
-    die("Error: SCSS file not found!");
-}
+// Detect environment (default to 'production' if not set)
+$env = getenv('APP_ENV') ?: 'production';
 
-// Get last modified time of SCSS files (including imports)
+// Get last modified time of SCSS files (including partials)
 function getLatestModifiedTime($dir) {
     $latestTime = 0;
     foreach (glob($dir . '/*.scss') as $file) {
@@ -25,24 +23,23 @@ function getLatestModifiedTime($dir) {
     return $latestTime;
 }
 
-$lastModified = getLatestModifiedTime(__DIR__); // Get latest timestamp from all SCSS files
+$lastModified = getLatestModifiedTime(__DIR__);
 $lastCached = file_exists($cacheFile) ? (int) file_get_contents($cacheFile) : 0;
 
-// Debugging: Log modification times
-error_log("SCSS Last Modified: " . $lastModified);
-error_log("Cache Timestamp: " . $lastCached);
-
-// Force recompile if SCSS changed
-if ($lastModified > $lastCached) {
+if ($lastModified > $lastCached || $env === 'development') {
     try {
         $compiler = new Compiler();
         $compiler->setImportPaths(__DIR__);
-        $compiledCss = $compiler->compileString(file_get_contents($scssFile))->getCss();
+
+        // Optimize for production
+        if ($env === 'production') {
+            $compiledCss = $compiler->compileString(file_get_contents($scssFile), 'compressed')->getCss();
+        } else {
+            $compiledCss = $compiler->compileString(file_get_contents($scssFile))->getCss();
+        }
 
         file_put_contents($cssFile, $compiledCss);
-        file_put_contents($cacheFile, $lastModified); // Store new timestamp
-
-        error_log("SCSS Recompiled: " . date("Y-m-d H:i:s"));
+        file_put_contents($cacheFile, $lastModified);
     } catch (Exception $e) {
         die("SCSS Compilation Error: " . $e->getMessage());
     }
