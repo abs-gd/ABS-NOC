@@ -6,6 +6,7 @@
 
 # Some commands to test the API
 ## Update metrics on a server
+```
 curl -X POST http://noc.abs.test/api/server-stats \
      -H "Content-Type: application/json" \
      -H "X-API-KEY: your-secret-api-key" \
@@ -15,9 +16,10 @@ curl -X POST http://noc.abs.test/api/server-stats \
           "ram_usage": 45.2,
           "disk_usage": 60.1,
           "network_usage": 12.4
-     }' 
+     }'
+```
 ## Clean up old server stats from DB
-curl -X POST http://noc.abs.test/api/cleanup-stats
+`curl -X POST http://noc.abs.test/api/cleanup-stats`
 
 # How to install the python agent as a service
 ## ON LINUX
