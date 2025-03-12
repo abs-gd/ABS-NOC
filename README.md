@@ -84,7 +84,7 @@ This prevents the database from getting too big and is hardcoded to 7 days but c
 
 
 # What the .env file should look like
-'''
+```
 APP_NAME="ABS NOC"
 APP_ENV=local # or production
 
@@ -100,4 +100,4 @@ SMTP_PASS='superSecurePass' # Created on https://myaccount.google.com/apppasswor
 SMTP_FROM=from@domain.tld
 ALERT_THRESHOLD=90 # Choose threshold here, is for CPU, RAM & DISK for now
 ALERT_RECIPIENT=employee@domain.tld # Will come from user info in DB later once implemented
-'''
+```
