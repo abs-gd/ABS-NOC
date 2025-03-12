@@ -25,4 +25,11 @@ class ServerStats {
             'network_usage' => $network_usage
         ]);
     }
+
+    public function cleanupOldStats(int $days = 7) {
+        $stmt = $this->db->prepare("
+            DELETE FROM server_stats WHERE recorded_at < NOW() - INTERVAL :days DAY
+        ");
+        $stmt->execute(['days' => $days]);
+    }
 }

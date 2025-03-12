@@ -44,4 +44,11 @@ class ServerStatsController {
             echo json_encode(["error" => "Failed to record stats"]);
         }
     }
+
+    public function cleanup() {
+        header('Content-Type: application/json');
+
+        $this->statsModel->cleanupOldStats(7);
+        echo json_encode(["success" => "Old stats cleaned up"]);
+    }
 }

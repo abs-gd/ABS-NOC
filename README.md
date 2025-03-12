@@ -67,3 +67,11 @@ WantedBy=multi-user.target
           - Stop the task if it runs longer than 1 hour
           - Run task as soon as possible if missed
      - Click OK to save changes.
+
+# Set up cron job to clean up old stats
+This prevents the database from getting to big and is hardcoded to 7 days but can be changed in /app/Controllers/ServerStatsController.php
+- Edit crontab: `crontab -e`
+- Add this line to run it every day at midnight:
+```
+0 0 * * * curl -X POST http://noc.abs.test/api/cleanup-stats
+```
