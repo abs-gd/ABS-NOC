@@ -12,7 +12,27 @@ class Server {
     }
 
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM servers ORDER BY created_at DESC");
+        $stmt = $this->db->query("SELECT * FROM servers ORDER BY ip_address ASC");
+        return $stmt->fetchAll();
+    }
+
+    public function getAllWithLatestStats() {
+        $stmt = $this->db->prepare("
+            SELECT s.id, s.name, s.ip_address, s.created_at,
+                COALESCE(ss.cpu_usage, 'N/A') AS cpu_usage,
+                COALESCE(ss.ram_usage, 'N/A') AS ram_usage,
+                COALESCE(ss.disk_usage, 'N/A') AS disk_usage,
+                COALESCE(ss.network_usage, 'N/A') AS network_usage,
+                COALESCE(ss.recorded_at, 'N/A') AS last_updated
+            FROM servers s
+            LEFT JOIN server_stats ss ON s.id = ss.server_id
+            AND ss.recorded_at = (
+                SELECT MAX(recorded_at) FROM server_stats WHERE server_id = s.id
+            )
+            ORDER BY s.ip_address ASC
+        ");
+        
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 

@@ -18,9 +18,11 @@ class ServerController {
     }
 
     public function index() {
-        $servers = $this->serverModel->getAll();
+        /*$servers = $this->serverModel->getAll();*/
+        /*$servers = $this->serverModel->getAllWithLatestStats();*/
         return Renderer::render('servers.twig', [
-            'servers' => $servers,
+            /*'servers' => $servers,*/
+            'servers' => $this->serverModel->getAllWithLatestStats(),
             'user' => $_SESSION['user'] ?? null
         ]);
     }
@@ -30,7 +32,7 @@ class ServerController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::validateToken($_POST['csrf_token'])) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'Invalid CSRF token.'
                 ]);
@@ -41,7 +43,7 @@ class ServerController {
 
             if (empty($name) || empty($ip_address)) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'All fields are required.'
                 ]);
@@ -49,7 +51,7 @@ class ServerController {
 
             if (!filter_var($ip_address, FILTER_VALIDATE_IP)) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'Invalid IP address format.'
                 ]);
@@ -58,7 +60,7 @@ class ServerController {
             $this->serverModel->create($name, $ip_address);
 
             return Renderer::render('servers.twig', [
-                'servers' => $this->serverModel->getAll(),
+                'servers' => $this->serverModel->getAllWithLatestStats(),
                 'success' => 'Server added successfully!',
                 'user' => $_SESSION['user'] ?? null
             ]);
@@ -70,7 +72,7 @@ class ServerController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::validateToken($_POST['csrf_token'])) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'Invalid CSRF token.'
                 ]);
@@ -82,7 +84,7 @@ class ServerController {
 
             if (empty($name) || empty($ip_address)) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'All fields are required.'
                 ]);
@@ -90,7 +92,7 @@ class ServerController {
 
             if (!filter_var($ip_address, FILTER_VALIDATE_IP)) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'Invalid IP address format.'
                 ]);
@@ -99,7 +101,7 @@ class ServerController {
             $this->serverModel->update($id, $name, $ip_address);
 
             return Renderer::render('servers.twig', [
-                'servers' => $this->serverModel->getAll(),
+                'servers' => $this->serverModel->getAllWithLatestStats(),
                 'user' => $_SESSION['user'] ?? null,
                 'success' => 'Server updated successfully!'
             ]);
@@ -111,7 +113,7 @@ class ServerController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::validateToken($_POST['csrf_token'])) {
                 return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAll(),
+                    'servers' => $this->serverModel->getAllWithLatestStats(),
                     'user' => $_SESSION['user'] ?? null,
                     'error' => 'Invalid CSRF token.'
                 ]);
@@ -121,10 +123,17 @@ class ServerController {
             $this->serverModel->delete($id);
 
             return Renderer::render('servers.twig', [
-                'servers' => $this->serverModel->getAll(),
+                'servers' => $this->serverModel->getAllWithLatestStats(),
                 'user' => $_SESSION['user'] ?? null,
                 'success' => 'Server deleted successfully!'
             ]);
         }
+    }
+
+    public function getLatestServers() {
+        header('Content-Type: application/json');
+
+        $servers = $this->serverModel->getAllWithLatestStats();
+        echo json_encode($servers);
     }
 }
