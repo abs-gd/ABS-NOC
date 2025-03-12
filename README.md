@@ -18,31 +18,52 @@ curl -X POST http://noc.abs.test/api/server-stats \
 
 # How to install the python agent as a service
 ## ON LINUX
-`nano /etc/systemd/system/server-agent.service`
+- Make it executable:
+`chmod +x agent.py`
+- Create systemd service file:
+`nano /etc/systemd/system/abs-server-monitor.service`
 ```
 [Unit]
-Description=Server Monitoring Agent
+Description=ABS Server Monitoring Agent
 After=network.target
 
 [Service]
 ExecStart=/usr/bin/python3 /path/to/agent.py
+WorkingDirectory=/path/to
 Restart=always
-User=root
+User=userYouWantItToRunAs
+Environment="PYTHONUNBUFFERED=1"
 
 [Install]
 WantedBy=multi-user.target
 ```
-
+- Reload services:
 `systemctl daemon-reload`  
-`systemctl enable server-agent`  
-`systemctl start server-agent`  
-`systemctl status server-agent`  
+- Enable the service:
+`systemctl enable abs-server-monitor`  
+- Start the service:
+`systemctl start abs-server-monitor`  
+- Check if it worked:
+`systemctl status abs-server-monitor`  
 
 ## ON WINDOWS
-- Open Task Scheduler
-- Create a New Task
-- Set Trigger → "At startup" or "Every 5 minutes"
-- Set Action → "Start a program"
-  - Program: python
-  - Arguments: "C:\path\to\agent.py"
-- Save & Start the Task
+- Press Win + R, type taskschd.msc, and press Enter.
+- Click "Create Basic Task" in the right panel.
+- Name the Task and click next
+- Select trigger "when the computer starts" and click next
+- Select action "start a program" and click next
+     - Program: full path to python3
+     - Arguments: full path to agent.py
+     - Start in: directory where agent.py is located
+- Click next, then finish
+- Modify task to auto restart
+     - In Task Scheduler, find your task
+     - Right-click and select "Properties"
+     - Go to "Triggers", click "Edit", and set:
+          - Delay task for: 30 seconds (To ensure networking is available at startup)
+     - Go to "Settings" and enable:
+          - Allow task to be run on demand
+          - Restart the task if it fails
+          - Stop the task if it runs longer than 1 hour
+          - Run task as soon as possible if missed
+     - Click OK to save changes.
