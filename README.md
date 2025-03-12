@@ -1,5 +1,6 @@
 # ABS Network Operation Center
   - Monitors server resources, puppet and proxmox hypervisors
+  - Sends alerts to email, discord server channel and telegram channel
   - Panel with links to all important management platforms and sites (proxmox, phpmyadmin, hoster panels, google analytics, office365, ... )
   - Buttons and forms for commands I use a lot (pulling in puppet code, adding a new website on one of the webservers, ...)
 
