@@ -16,6 +16,8 @@ curl -X POST http://noc.abs.test/api/server-stats \
           "disk_usage": 60.1,
           "network_usage": 12.4
      }' 
+## Clean up old server stats from DB
+curl -X POST http://noc.abs.test/api/cleanup-stats
 
 # How to install the python agent as a service
 ## ON LINUX
