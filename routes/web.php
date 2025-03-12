@@ -5,7 +5,6 @@ $routes = [
     
     '/servers' => 'ServerController@index',
     '/servers/create' => 'ServerController@create',
-    /*'/servers/edit' => 'ServerController@edit',*/
     '/servers/delete' => 'ServerController@delete',
 
     '/servers/{id}' => 'ServerDetailsController@show',

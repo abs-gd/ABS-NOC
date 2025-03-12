@@ -50,15 +50,6 @@ class Server {
         ]);
     }
 
-    /*public function update(int $id, string $name, string $ip_address) {
-        $stmt = $this->db->prepare("UPDATE servers SET name = :name, ip_address = :ip_address WHERE id = :id");
-        return $stmt->execute([
-            'id' => $id,
-            'name' => $name,
-            'ip_address' => $ip_address
-        ]);
-    }*/
-
     public function updateDetails(int $id, string $name, string $ip_address, string $os, string $location, string $status, int $uptime) {
         $stmt = $this->db->prepare("
             UPDATE servers 

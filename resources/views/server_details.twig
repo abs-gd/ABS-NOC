@@ -83,7 +83,6 @@
     }
 
 		let chartInstance = null;
-		/*const maxNetworkBandwidth = 125000000; // 1 Gbps*/
 
 		function fetchHistoricalStats() {
         fetch(`/api/server/${serverId}/history`)
@@ -98,8 +97,6 @@
                 const cpuData = data.map(stat => stat.cpu_usage);
                 const ramData = data.map(stat => stat.ram_usage);
                 const diskData = data.map(stat => stat.disk_usage);
-								/*const networkData = data.map(stat => (stat.network_usage / maxNetworkBandwidth) * 100); // Convert to % */
-
 
                 // Destroy previous chart before creating a new one
                 if (chartInstance) {
@@ -135,15 +132,7 @@
                                 backgroundColor: "rgba(0, 255, 0, 0.2)",
                                 fill: true,
                                 tension: 0.3,
-                            }/*,
-                            {
-                                label: "Network Usage (Bytes)",
-                                data: networkData,
-                                borderColor: "purple",
-                                backgroundColor: "rgba(128, 0, 128, 0.2)",
-                                fill: true,
-                                tension: 0.3,
-                            }*/
+                            }
                         ]
                     },
                     options: {

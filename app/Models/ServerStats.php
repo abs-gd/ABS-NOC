@@ -58,8 +58,6 @@ class ServerStats {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return array_reverse($stmt->fetchAll());
-        /*$stmt->execute(['server_id' => $server_id]);
-        return $stmt->fetchAll();*/
     }
 
     public function checkAndSendAlerts(int $server_id, float $cpu, float $ram, float $disk) {

@@ -10,7 +10,6 @@ class ApiAuth {
         $apiKeyModel = new ApiKey($db);
 
         $headers = getallheaders();
-        /*$apiKey = $headers['X-API-KEY'] ?? null;*/
         $apiKey = $headers['X-Api-Key'] ?? null;
 
         if (!$apiKey || !$apiKeyModel->isValidKey($apiKey)) {

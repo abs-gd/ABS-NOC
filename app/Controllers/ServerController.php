@@ -11,17 +11,13 @@ class ServerController {
     private Server $serverModel;
 
     public function __construct() {
-        /*session_start();*/
         Auth::check();
         $db = require __DIR__ . '/../../config/database.php';
         $this->serverModel = new Server($db);
     }
 
     public function index() {
-        /*$servers = $this->serverModel->getAll();*/
-        /*$servers = $this->serverModel->getAllWithLatestStats();*/
         return Renderer::render('servers.twig', [
-            /*'servers' => $servers,*/
             'servers' => $this->serverModel->getAllWithLatestStats(),
             'user' => $_SESSION['user'] ?? null
         ]);
@@ -66,47 +62,6 @@ class ServerController {
             ]);
         }
     }
-
-    /*public function edit() {
-        Auth::check();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!Csrf::validateToken($_POST['csrf_token'])) {
-                return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAllWithLatestStats(),
-                    'user' => $_SESSION['user'] ?? null,
-                    'error' => 'Invalid CSRF token.'
-                ]);
-            }
-
-            $id = (int) $_POST['id'];
-            $name = trim($_POST['name']);
-            $ip_address = trim($_POST['ip_address']);
-
-            if (empty($name) || empty($ip_address)) {
-                return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAllWithLatestStats(),
-                    'user' => $_SESSION['user'] ?? null,
-                    'error' => 'All fields are required.'
-                ]);
-            }
-
-            if (!filter_var($ip_address, FILTER_VALIDATE_IP)) {
-                return Renderer::render('servers.twig', [
-                    'servers' => $this->serverModel->getAllWithLatestStats(),
-                    'user' => $_SESSION['user'] ?? null,
-                    'error' => 'Invalid IP address format.'
-                ]);
-            }
-
-            $this->serverModel->update($id, $name, $ip_address);
-
-            return Renderer::render('servers.twig', [
-                'servers' => $this->serverModel->getAllWithLatestStats(),
-                'user' => $_SESSION['user'] ?? null,
-                'success' => 'Server updated successfully!'
-            ]);
-        }
-    }*/
 
     public function delete() {
         Auth::check();

@@ -13,20 +13,13 @@
         <ul id="nav-menu">
             <li><a href="/">Home</a></li>
             <li><a href="/servers">Servers</a></li>
-
-            {#{% if user %}#}
-                <li>
-                    <form method="POST" action="/logout">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                        <button type="submit">Logout</button>
-                    </form>
-                </li>
+            <li>
+                <form method="POST" action="/logout">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
             <li><button id="dark-mode-toggle">🌙 Dark Mode</button></li>
-
-            {#{% else %}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-            {% endif %}#}
         </ul>
     </nav>
     </header>
