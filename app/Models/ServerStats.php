@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use App\Helpers\EmailHelper;
 
 class ServerStats {
     private PDO $db;
@@ -59,5 +60,27 @@ class ServerStats {
         return array_reverse($stmt->fetchAll());
         /*$stmt->execute(['server_id' => $server_id]);
         return $stmt->fetchAll();*/
+    }
+
+    public function checkAndSendAlerts(int $server_id, float $cpu, float $ram, float $disk) {
+        $threshold = getenv('ALERT_THRESHOLD');
+        
+        // Fetch server name
+        $stmt = $this->db->prepare("SELECT name FROM servers WHERE id = :server_id");
+        $stmt->execute(['server_id' => $server_id]);
+        $server = $stmt->fetch();
+        $serverName = $server ? $server['name'] : "Unknown Server";
+
+        if ($cpu > $threshold || $ram > $threshold || $disk > $threshold) {
+            $subject = "NOC ALERT: $serverName";
+            $message = "
+                <h2>Server: $serverName</h2>
+                <p><strong>CPU Usage:</strong> $cpu%</p>
+                <p><strong>RAM Usage:</strong> $ram%</p>
+                <p><strong>Disk Usage:</strong> $disk%</p>
+                <p>One or more metrics have exceeded the threshold of $threshold%.</p>
+            ";
+            EmailHelper::sendAlert($subject, $message);
+        }
     }
 }

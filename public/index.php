@@ -5,7 +5,16 @@ use App\Controllers\HomeController;
 use App\Controllers\AuthController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+/*
+use Dotenv\Dotenv;
 
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+error_log("SMTP_HOST: " . getenv('SMTP_HOST'));
+error_log("SMTP_FROM: " . getenv('SMTP_FROM'));
+error_log("ALERT_RECIPIENT: " . getenv('ALERT_RECIPIENT'));
+*/
 Cors::handle();
 
 session_start();

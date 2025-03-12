@@ -38,6 +38,7 @@ class ServerStatsController {
         $network_usage = (float) $data['network_usage'];
 
         if ($this->statsModel->store($server_id, $cpu_usage, $ram_usage, $disk_usage, $network_usage)) {
+            $this->statsModel->checkAndSendAlerts($server_id, $cpu_usage, $ram_usage, $disk_usage);
             echo json_encode(["success" => "Stats recorded successfully"]);
         } else {
             http_response_code(500);
