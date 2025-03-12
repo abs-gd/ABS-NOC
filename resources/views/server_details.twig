@@ -44,4 +44,154 @@
 
 		<a href="/servers" class="back-link">← Back to Servers</a>
 	</div>
+
+	<!-- Recent Stats Table -->
+	<table>
+		<tr>
+			<th>CPU Usage</th>
+			<th>RAM Usage</th>
+			<th>Disk Usage</th>
+			<th>Network Usage</th>
+		</tr>
+		<tr id="latest-stats">
+			<td id="cpu">Loading...</td>
+			<td id="ram">Loading...</td>
+			<td id="disk">Loading...</td>
+			<td id="network">Loading...</td>
+		</tr>
+	</table>
+
+	<!-- Historical Graph -->
+<div style="width: 100%; max-width: 800px;">
+	<canvas id="statsChart" style="width: 100%; height: 400px;"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const serverId = "{{ server.id }}";
+    
+    function fetchLatestStats() {
+        fetch(`/api/server/${serverId}/stats`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("cpu").textContent = data.cpu_usage;
+                document.getElementById("ram").textContent = data.ram_usage;
+                document.getElementById("disk").textContent = data.disk_usage;
+                document.getElementById("network").textContent = data.network_usage;
+            });
+    }
+
+		let chartInstance = null;
+		/*const maxNetworkBandwidth = 125000000; // 1 Gbps*/
+
+		function fetchHistoricalStats() {
+        fetch(`/api/server/${serverId}/history`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    console.error("No historical data available.");
+                    return;
+                }
+
+                const labels = data.map(stat => new Date(stat.recorded_at).toLocaleTimeString());
+                const cpuData = data.map(stat => stat.cpu_usage);
+                const ramData = data.map(stat => stat.ram_usage);
+                const diskData = data.map(stat => stat.disk_usage);
+								/*const networkData = data.map(stat => (stat.network_usage / maxNetworkBandwidth) * 100); // Convert to % */
+
+
+                // Destroy previous chart before creating a new one
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                const ctx = document.getElementById("statsChart").getContext("2d");
+                chartInstance = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "CPU Usage (%)",
+                                data: cpuData,
+                                borderColor: "red",
+                                backgroundColor: "rgba(255, 0, 0, 0.2)",
+                                fill: true,
+                                tension: 0.3, // Smooth curves
+                            },
+                            {
+                                label: "RAM Usage (%)",
+                                data: ramData,
+                                borderColor: "blue",
+                                backgroundColor: "rgba(0, 0, 255, 0.2)",
+                                fill: true,
+                                tension: 0.3,
+                            },
+                            {
+                                label: "Disk Usage (%)",
+                                data: diskData,
+                                borderColor: "green",
+                                backgroundColor: "rgba(0, 255, 0, 0.2)",
+                                fill: true,
+                                tension: 0.3,
+                            }/*,
+                            {
+                                label: "Network Usage (Bytes)",
+                                data: networkData,
+                                borderColor: "purple",
+                                backgroundColor: "rgba(128, 0, 128, 0.2)",
+                                fill: true,
+                                tension: 0.3,
+                            }*/
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: { size: 14 },
+                                    boxWidth: 20
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + "%";
+                                    }
+                                }
+                            },
+                            x: {
+                                display: true,
+                                title: { display: true, text: "Time" }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error("Error loading historical stats:", error));
+    }
+
+
+    // Load stats on page load
+    fetchLatestStats();
+    fetchHistoricalStats();
+
+    // Auto-refresh latest stats every 30 seconds
+    setInterval(fetchLatestStats, 30000);
+</script>
+
 {% endblock %}

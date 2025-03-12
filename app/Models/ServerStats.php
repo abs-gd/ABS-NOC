@@ -32,4 +32,32 @@ class ServerStats {
         ");
         $stmt->execute(['days' => $days]);
     }
+
+    public function getLatestStatsByServer(int $server_id) {
+        $stmt = $this->db->prepare("
+            SELECT cpu_usage, ram_usage, disk_usage, network_usage, recorded_at 
+            FROM server_stats 
+            WHERE server_id = :server_id 
+            ORDER BY recorded_at DESC 
+            LIMIT 1
+        ");
+        $stmt->execute(['server_id' => $server_id]);
+        return $stmt->fetch();
+    }
+
+    public function getHistoricalStatsByServer(int $server_id, int $limit = 50) {
+        $stmt = $this->db->prepare("
+            SELECT cpu_usage, ram_usage, disk_usage, network_usage, recorded_at 
+            FROM server_stats 
+            WHERE server_id = :server_id 
+            ORDER BY recorded_at DESC
+            LIMIT :limit
+        ");
+        $stmt->bindValue(':server_id', $server_id, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return array_reverse($stmt->fetchAll());
+        /*$stmt->execute(['server_id' => $server_id]);
+        return $stmt->fetchAll();*/
+    }
 }

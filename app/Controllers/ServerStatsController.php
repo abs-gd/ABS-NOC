@@ -51,4 +51,26 @@ class ServerStatsController {
         $this->statsModel->cleanupOldStats(7);
         echo json_encode(["success" => "Old stats cleaned up"]);
     }
+
+    public function getLatestStats() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die("Invalid server ID.");
+        }
+        header('Content-Type: application/json');
+
+        $stats = $this->statsModel->getLatestStatsByServer($id);
+        echo json_encode($stats ?: ["cpu_usage" => "NaN", "ram_usage" => "NaN", "disk_usage" => "NaN", "network_usage" => "NaN"]);
+    }
+
+    public function getHistoricalStats() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            die("Invalid server ID.");
+        }
+        header('Content-Type: application/json');
+
+        $stats = $this->statsModel->getHistoricalStatsByServer($id);
+        echo json_encode($stats);
+    }
 }
