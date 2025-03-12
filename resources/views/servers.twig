@@ -16,7 +16,7 @@
     {% if servers is empty %}
         <p>No servers found.</p>
     {% else %}
-        <table border="1">
+        <table id="servers-table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -36,9 +36,9 @@
                         <td>{{ server.name }}</td>
                         <td>{{ server.ip_address }}</td>
                         <td>{{ server.created_at }}</td>
-                        <td>{{ server.cpu_usage }}</td>
-                        <td>{{ server.ram_usage }}</td>
-                        <td>{{ server.disk_usage }}</td>
+                        <td class="usage" data-value="{{ server.cpu_usage }}">{{ server.cpu_usage }}</td>
+                        <td class="usage" data-value="{{ server.ram_usage }}">{{ server.ram_usage }}</td>
+                        <td class="usage" data-value="{{ server.disk_usage }}">{{ server.disk_usage }}</td>
                         <td>{{ server.network_usage }}</td>
                         <td>{{ server.last_updated }}</td>
                         <td>
@@ -66,8 +66,31 @@
         <button type="submit">Add Server</button>
     </form>
 
-{# Refresh table every 30sec #}
+
 <script>
+    {# Color code servers depending on their usage levels #}
+    function applyColorCoding() {
+        document.querySelectorAll(".usage").forEach(cell => {
+            let value = parseFloat(cell.dataset.value);
+            if (isNaN(value)) {
+                cell.style.color = "#999"; // Gray for NaN
+                return;
+            }
+
+            if (value < 75) {
+                cell.style.color = "green"; // Low usage
+            } else if (value < 90) {
+                cell.style.color = "orange"; // Medium usage
+            } else {
+                cell.style.color = "red"; // High usage
+            }
+        });
+    }
+
+    {# Apply color coding on page load #}
+    applyColorCoding();
+
+    {# Refresh table every 30sec #}
     function refreshServersTable() {
         fetch('/api/servers')
             .then(response => response.json())
@@ -81,9 +104,9 @@
                             <td>${server.name}</td>
                             <td>${server.ip_address}</td>
                             <td>${server.created_at}</td>
-                            <td>${server.cpu_usage}</td>
-                            <td>${server.ram_usage}</td>
-                            <td>${server.disk_usage}</td>
+                            <td class="usage" data-value="{{ server.cpu_usage }}">${server.cpu_usage}</td>
+                            <td class="usage" data-value="{{ server.ram_usage }}">${server.ram_usage}</td>
+                            <td class="usage" data-value="{{ server.disk_usage }}">${server.disk_usage}</td>
                             <td>${server.network_usage}</td>
                             <td>${server.last_updated}</td>
                             <td>
@@ -98,6 +121,9 @@
                     `;
                     tableBody.innerHTML += row;
                 });
+
+                // Apply color coding after table updates
+                applyColorCoding();
             })
             .catch(error => console.error("Error loading server data:", error));
     }
