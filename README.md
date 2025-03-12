@@ -5,6 +5,7 @@
   - Buttons and forms for commands I use a lot (pulling in puppet code, adding a new website on one of the webservers, ...)
 
 # Some commands to test the API
+Don't forget to add your API key to the database, this will be done automatically later during install.
 ## Update metrics on a server
 ```
 curl -X POST http://noc.abs.test/api/server-stats \
