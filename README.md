@@ -102,6 +102,8 @@ ALERT_THRESHOLD=90 # Choose threshold here, is for CPU, RAM & DISK for now
 ALERT_RECIPIENT=employee@domain.tld # Will come from user info in DB later once implemented
 ```
 # What the .env file for the agent should look like
+```
 API_URL=http://noc.abs.test/api/server-stats
 API_KEY=superSecretApiKey
 SERVER_ID=1 # Change to ID of server this agent if for (I'm going to add this file with puppet in my own environment)
+```
