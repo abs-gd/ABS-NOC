@@ -75,3 +75,23 @@ This prevents the database from getting too big and is hardcoded to 7 days but c
 ```
 0 0 * * * curl -X POST http://noc.abs.test/api/cleanup-stats
 ```
+
+
+# What the .env file should look like
+'''
+APP_NAME="ABS NOC"
+APP_ENV=local # or production
+
+DB_HOST=127.0.0.1
+DB_DATABASE=dbname
+DB_USERNAME=dbusername
+DB_PASSWORD='superSecurePass'
+
+SMTP_HOST=smtp.gmail.com # or other smtp host
+SMTP_PORT=587
+SMTP_USER=user@domain.tld
+SMTP_PASS='superSecurePass' # Created on https://myaccount.google.com/apppasswords in case of gmail with two factor auth enabled
+SMTP_FROM=from@domain.tld
+ALERT_THRESHOLD=90 # Choose threshold here, is for CPU, RAM & DISK for now
+ALERT_RECIPIENT=employee@domain.tld # Will come from user info in DB later once implemented
+'''
