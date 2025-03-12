@@ -69,7 +69,7 @@ WantedBy=multi-user.target
      - Click OK to save changes.
 
 # Set up cron job to clean up old stats
-This prevents the database from getting to big and is hardcoded to 7 days but can be changed in /app/Controllers/ServerStatsController.php
+This prevents the database from getting too big and is hardcoded to 7 days but can be changed in /app/Controllers/ServerStatsController.php
 - Edit crontab: `crontab -e`
 - Add this line to run it every day at midnight:
 ```
