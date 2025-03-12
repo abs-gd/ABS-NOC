@@ -65,7 +65,7 @@ class ServerController {
         }
     }
 
-    public function edit() {
+    /*public function edit() {
         Auth::check();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::validateToken($_POST['csrf_token'])) {
@@ -104,7 +104,7 @@ class ServerController {
                 'success' => 'Server updated successfully!'
             ]);
         }
-    }
+    }*/
 
     public function delete() {
         Auth::check();

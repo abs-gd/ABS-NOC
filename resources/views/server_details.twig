@@ -1,0 +1,47 @@
+{% extends "layout.twig" %}
+
+{% block title %}ABS NOC - {{ server.name }}{% endblock %}
+
+{% block content %}
+	<div class="server-details-container">
+		<h1 class="server-details-title">{{ server.name}}</h1>
+
+		{% if error %}
+			<p style="color: red;">{{ error }}</p>
+		{% endif %}
+
+		{% if success %}
+			<p style="color: green;">{{ success }}</p>
+		{% endif %}
+
+		<form method="POST" action="/servers/update" class="server-details-form">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+			<input type="hidden" name="id" value="{{ server.id }}">
+
+			<label for="name">Server Name:</label>
+			<input type="text" name="name" id="name" value="{{ server.name }}" required>
+
+			<label for="ip_address">IP Address:</label>
+			<input type="text" name="ip_address" id="ip_address" value="{{ server.ip_address }}" required>
+
+			<label for="os">Operating System:</label>
+			<input type="text" name="os" id="os" value="{{ server.os }}" required>
+
+			<label for="location">Location:</label>
+			<input type="text" name="location" id="location" value="{{ server.location }}" required>
+
+			<label for="status">Status:</label>
+			<select name="status" id="status">
+				<option value="active" {% if server.status == 'active' %} selected {% endif %}>Active</option>
+				<option value="inactive" {% if server.status == 'inactive' %} selected {% endif %}>Inactive</option>
+			</select>
+
+			<label for="uptime">Uptime (hours):</label>
+			<input type="number" name="uptime" id="uptime" value="{{ server.uptime }}" required>
+
+			<button type="submit">Save Changes</button>
+		</form>
+
+		<a href="/servers" class="back-link">← Back to Servers</a>
+	</div>
+{% endblock %}

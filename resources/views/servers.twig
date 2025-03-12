@@ -21,8 +21,8 @@
                 <tr>
                     <th>Name</th>
                     <th>IP Address</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
+                    <th>Added on</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,21 +32,24 @@
                         <td>{{ server.ip_address }}</td>
                         <td>{{ server.created_at }}</td>
                         <td>
-                            <!-- Edit Form -->
+                            {#<!-- Edit Form -->
                             <form method="POST" action="/servers/edit" style="display: inline;">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <input type="hidden" name="id" value="{{ server.id }}">
                                 <input type="text" name="name" value="{{ server.name }}" required>
                                 <input type="text" name="ip_address" value="{{ server.ip_address }}" required>
                                 <button type="submit">Update</button>
-                            </form>
+                            </form>#}
 
-                            <!-- Delete Form -->
+                            {# Delete Form #}
                             <form method="POST" action="/servers/delete" style="display: inline;">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <input type="hidden" name="id" value="{{ server.id }}">
                                 <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
+
+                            {# Details Link #}
+                            <a href="/servers/{{ server.id }}">Details</a>
                         </td>
                     </tr>
                 {% endfor %}

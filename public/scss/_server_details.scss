@@ -1,0 +1,76 @@
+@import 'variables';
+@import 'mixins';
+
+.server-details-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.server-details-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: $primary-color;
+}
+
+.server-details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  label {
+    font-weight: bold;
+    color: $text-color;
+  }
+
+  input,
+  select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+
+  button {
+    @extend %button-base;
+    /*@include button($primary-color);-*/
+    width: 100%;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+  }
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  font-size: 16px;
+  color: $primary-color;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+    text-decoration: underline;
+  }
+}

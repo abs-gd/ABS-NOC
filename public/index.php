@@ -1,4 +1,5 @@
 <?php
+
 use App\Middleware\Cors;
 use App\Controllers\HomeController;
 use App\Controllers\AuthController;
@@ -10,7 +11,10 @@ Cors::handle();
 session_start();
 //var_dump($_SESSION);
 
-$routes = require __DIR__ . '/../routes/web.php';
+/*$routes = require __DIR__ . '/../routes/web.php';*/
+$webRoutes = require __DIR__ . '/../routes/web.php';
+$apiRoutes = require __DIR__ . '/../routes/api.php';
+$routes = array_merge($webRoutes, $apiRoutes);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 if (isset($routes[$requestUri])) {
@@ -29,3 +33,4 @@ if (isset($routes[$requestUri])) {
     http_response_code(404);
     echo "Page not found";
 }
+
