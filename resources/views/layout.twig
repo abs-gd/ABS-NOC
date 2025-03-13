@@ -28,49 +28,8 @@
         {% block content %}{% endblock %}
     </main>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.getElementById("dark-mode-toggle");
-        const body = document.body;
-        const isDarkMode = localStorage.getItem("dark-mode") === "enabled";
+{{ jsfile('darkModeToggle.js') }}
+{{ jsfile('navToggleMobile.js') }}
 
-        if (isDarkMode) {
-            body.classList.add("dark-mode");
-            toggleButton.textContent = "☀️ Light Mode";
-        }
-
-        toggleButton.addEventListener("click", function () {
-            body.classList.add("transitioning");
-            setTimeout(() => {
-                if (body.classList.contains("dark-mode")) {
-                    body.classList.remove("dark-mode");
-                    localStorage.setItem("dark-mode", "disabled");
-                    toggleButton.textContent = "🌙 Dark Mode";
-                } else {
-                    body.classList.add("dark-mode");
-                    localStorage.setItem("dark-mode", "enabled");
-                    toggleButton.textContent = "☀️ Light Mode";
-                }
-                body.classList.remove("transitioning");
-            }, 300);
-        });
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.getElementById("nav-toggle");
-        const navMenu = document.getElementById("nav-menu");
-
-        toggleButton.addEventListener("click", function () {
-            navMenu.classList.toggle("active");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!navMenu.contains(event.target) && event.target !== toggleButton) {
-                navMenu.classList.remove("active");
-            }
-        });
-    });
-</script>
 </body>
 </html>

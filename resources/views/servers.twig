@@ -66,72 +66,7 @@
         <button type="submit">Add Server</button>
     </form>
 
-
-<script>
-    {# Color code servers depending on their usage levels #}
-    function applyColorCoding() {
-        document.querySelectorAll(".usage").forEach(cell => {
-            let value = parseFloat(cell.dataset.value);
-            if (isNaN(value)) {
-                cell.style.color = "#999"; // Gray for NaN
-                return;
-            }
-
-            if (value < 75) {
-                cell.style.color = "green"; // Low usage
-            } else if (value < 90) {
-                cell.style.color = "orange"; // Medium usage
-            } else {
-                cell.style.color = "red"; // High usage
-            }
-        });
-    }
-
-    {# Apply color coding on page load #}
-    applyColorCoding();
-
-    {# Refresh table every 30sec #}
-    function refreshServersTable() {
-        fetch('/api/servers')
-            .then(response => response.json())
-            .then(servers => {
-                let tableBody = document.getElementById('servers-body');
-                tableBody.innerHTML = '';
-
-                servers.forEach(server => {
-                    let row = `
-                        <tr>
-                            <td>${server.name}</td>
-                            <td>${server.ip_address}</td>
-                            <td>${server.created_at}</td>
-                            <td class="usage" data-value="${ server.cpu_usage }">${server.cpu_usage}</td>
-                            <td class="usage" data-value="${ server.ram_usage }">${server.ram_usage}</td>
-                            <td class="usage" data-value="${ server.disk_usage }">${server.disk_usage}</td>
-                            <td>${server.network_usage}</td>
-                            <td>${server.last_updated}</td>
-                            <td>
-                                <form method="POST" action="/servers/delete" style="display: inline;">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                    <input type="hidden" name="id" value="{{ server.id }}">
-                                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                                </form>
-                                <a href="/servers/${server.id}">Details</a>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-
-                // Apply color coding after table updates
-                applyColorCoding();
-            })
-            .catch(error => console.error("Error loading server data:", error));
-    }
-
-    // Refresh every 30 seconds
-    setInterval(refreshServersTable, 30000);
-</script>
+{{ jsfile('applyColorCoding.js') }}
+{{ jsfile('refreshServersTable.js') }}
 
 {% endblock %}
-
-
